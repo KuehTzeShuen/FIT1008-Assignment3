@@ -25,13 +25,25 @@ class Mode1Tests(TestCase):
     def check_solution(self, sites, starting_adv, solution, optimal):
         current_gold = 0
         current_adventurers = starting_adv
+        # print(current_adventurers)
         for site, adventurers_sent in solution:
+            # print(site.get_name())
+            # print(site.get_gold())
+            # print(site.get_guardians())
+            
+            # print(adventurers_sent)
             self.assertGreaterEqual(adventurers_sent, 0)
             # This assertIn is written so that we allow copies with the same properties to be considered equal.
             self.assertIn((site.get_name(), site.get_gold(), site.get_guardians()), [(i.get_name(), i.get_gold(), i.get_guardians()) for i in sites])
             current_gold += min(site.get_gold() * adventurers_sent / site.get_guardians(), site.get_gold())
             current_adventurers -= adventurers_sent
+            # print(adventurers_sent)
+            # print(current_gold)
+            # print(current_adventurers)
             self.assertGreaterEqual(current_adventurers, 0)
+        #     print("loop")
+        # print(current_adventurers)
+        # print(current_gold)
         self.assertFalse(current_gold < optimal, "Your land selection is suboptimal!")
         if current_gold > optimal:
             raise ValueError("ERROR! You somehow made more gold than the intended solution1")
@@ -100,6 +112,7 @@ class Mode1Tests(TestCase):
         # Done for testing \/ so check_solution works.
         self.sites[0].set_guardians(1)
         selected_again = nav.select_sites()
+        print(selected_again)
         self.check_solution(self.sites, 200, selected_again, 1158)
 
     @number("1.6")
